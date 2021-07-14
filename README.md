@@ -39,3 +39,5 @@ You are able to run the application with:
 ```bash
 python manage.py runserver
 ```
+
+The admin panel will be available at `http://localhost:8000/admin`.
