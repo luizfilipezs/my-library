@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Book, Author, Category
+from .models import Book, Author, Category, Lending
 
 
 
@@ -66,3 +66,25 @@ class AuthorAdmin(admin.ModelAdmin):
 
     categories_list.__name__ = 'Categorias'
     photo_image.__name__ = 'Foto'
+
+@admin.register(Lending)
+class LendingAdmin(admin.ModelAdmin):
+    list_display = [
+        'book',
+        'status',
+        'date',
+        'estimated_return_date',
+    ]
+
+    list_filter = [
+        'status',
+        'date',
+    ]
+
+    actions = [
+        'mark_as_returned',
+    ]
+
+    @admin.action(description='Marcar como devolvido(s)')
+    def mark_as_returned(self, request, queryset):
+        queryset.update(status='returned')

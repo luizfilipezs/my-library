@@ -50,3 +50,22 @@ class Book(models.Model):
 
     class Meta:
         verbose_name = 'Livro'
+
+class Lending(models.Model):
+    STATUS_CHOICES = (
+        ('lent', 'Emprestado'),
+        ('returned', 'Devolvido'),
+    )
+
+    book = models.ForeignKey(Book, related_name='book', verbose_name='Livro', on_delete=models.PROTECT)
+    is_mine = models.BooleanField(default=True, verbose_name='O livro é meu')
+    date = models.DateField(verbose_name='Data', blank=True, null=True)
+    estimated_return_date = models.DateField(verbose_name='Data estimada para devolução', blank=True, null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='lent', verbose_name='Status')
+    description = models.TextField(max_length=255, verbose_name='Descrição', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.book} | Retorno estimado para {self.date}"
+
+    class Meta:
+        verbose_name = 'Empréstimo'
